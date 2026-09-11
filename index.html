@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miel Terrazas | Estética Corporal</title>
+    
+    <!-- Fuentes de Google: Cormorant Garamond y Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Íconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Archivo de estilos -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- =========================================
+         BARRA DE NAVEGACIÓN (NAVBAR)
+    ========================================== -->
+    <header class="navbar">
+        <div class="navbar-contenedor">
+            
+            <div class="logo-marca">
+                <a href="#">
+                    <img src="img/logo.jpg" alt="Logo Miel Terrazas" class="logo-img-cuadrado" loading="lazy">
+                </a>
+            </div>
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="menu" id="menu">
+                <ul>
+                    <li><a href="#inicio" class="activo-link" data-es="Inicio" data-pt="Início">Inicio</a></li>
+                    <li><a href="#tratamientos" data-es="Tratamientos" data-pt="Tratamentos">Tratamientos</a></li>
+                    <li><a href="#nosotros" data-es="Nosotros" data-pt="Sobre Nós">Nosotros</a></li>
+                    <li><a href="#contacto" data-es="Contacto" data-pt="Contato">Contacto</a></li>
+                    
+                    <!-- Botón Selector de Idioma -->
+                    <li class="selector-idioma">
+                        <button id="btn-idioma" class="btn-lang" aria-label="Cambiar idioma">
+                            <span class="flag">🇧🇷</span> PT
+                        </button>
+                    </li>
+
+                    <!-- Botón directo de WhatsApp en la barra superior -->
+                    <li class="menu-btn-movil">
+                        <a href="https://wa.me/556899499836?text=Hola,%20me%20gustaría%20agendar%20una%20cita."
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn-nav-agendar"
+                           data-es="Contactar WhatsApp"
+                           data-pt="Contactar WhatsApp">
+                           Contactar WhatsApp
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- =========================================
+         SECCIÓN HERO (INICIO)
+    ========================================== -->
+    <section id="inicio" class="hero">
+        <div class="hero-bg-imagen"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-contenido reveal-scroll">
+            <span class="hero-sub-etiqueta"
+                  data-es="Estética Corporal"
+                  data-pt="Estética Corporal">
+                  Estética Corporal
+            </span>
+
+            <h1 class="hero-titulo">Miel Terrazas</h1>
+            
+            <div class="separador-con-lineas">
+                <img src="img/separador-flor.png"
+                     alt="Detalle floral"
+                     class="img-separador">
+            </div>
+            
+            <p class="hero-subtitulo"
+               data-es="Un espacio dedicado a tu belleza, bienestar y cuidado personal."
+               data-pt="Um espaço dedicado à sua beleza, bem-estar e cuidado pessoal.">
+               Un espacio dedicado a tu belleza, bienestar y cuidado personal.
+            </p>
+            
+            <!-- Botón de reserva hacia el formulario web -->
+            <a href="reserva.html"
+               class="btn-primario-whatsapp"
+               data-es="Agendar mi cita"
+               data-pt="Agendar meu horário">
+
+                <span>Agendar mi cita</span>
+                <i class="far fa-calendar-check"></i>
+
+            </a>
+        </div>
+    </section>
+
+
+    <!-- =========================================
+         SECCIÓN TRATAMIENTOS (DINÁMICO)
+    ========================================== -->
+    <section id="tratamientos" class="seccion-tratamientos">
+
+        <h2 class="seccion-titulo reveal-scroll"
+            data-es="Nuestros Servicios"
+            data-pt="Nossos Serviços">
+            Nuestros Servicios
+        </h2>
+        
+        <div class="separador-con-lineas reveal-scroll">
+            <img src="img/separador-flor.png"
+                 alt="Detalle floral"
+                 class="img-separador">
+        </div>
+
+        <!-- Contenedor dinámico de Firebase -->
+        <div class="contenedor-tratamientos">
+            <p id="mensaje-carga" style="text-align: center; color: #888; padding: 2rem 0;">Cargando servicios...</p>
+        </div>
+    </section>
+
+
+    <!-- =========================================
+         SECCIÓN NOSOTROS
+    ========================================== -->
+    <section id="nosotros" class="seccion-nosotros">
+
+        <div class="nosotros-contenido reveal-scroll">
+
+            <h2 class="seccion-titulo"
+                data-es="Sobre Nosotros"
+                data-pt="Sobre Nós">
+                Sobre Nosotros
+            </h2>
+            
+            <div class="separador-con-lineas">
+                <img src="img/separador-flor.png"
+                     alt="Detalle floral"
+                     class="img-separador">
+            </div>
+            
+            <p data-es="Bajo la dirección de la Lic. Miel Terrazas, nuestro espacio está diseñado para ofrecerte tratamientos vanguardistas con un enfoque centrado en tu bienestar y armonía corporal." 
+               data-pt="Sob a direção da Lic. Miel Terrazas, nosso espaço foi projetado para oferecer tratamentos de vanguarda com foco no seu bem-estar e harmonia corporal.">
+               Bajo la dirección de la <strong>Lic. Miel Terrazas</strong>, nuestro espacio está diseñado para ofrecerte tratamientos vanguardistas con un enfoque centrado en tu bienestar y armonía corporal.
+            </p>
+
+            <p data-es="Ubicados en el corazón de Cobija, Pando, combinamos profesionalismo, técnicas modernas y un ambiente relajante para brindarte la mejor experiencia de cuidado personal." 
+               data-pt="Localizados no coração de Cobija, Pando, combinamos profissionalismo, técnicas modernas e um ambiente relaxante para proporcionar a melhor experiência de cuidado pessoal.">
+               Ubicados en el corazón de Cobija, Pando, combinamos profesionalismo, técnicas modernas y un ambiente relajante para brindarte la mejor experiencia de cuidado personal.
+            </p>
+            
+            <div class="nosotros-galeria">
+
+                <img src="img/lugar1.jpg"
+                     alt="Instalaciones Miel Terrazas"
+                     loading="lazy">
+
+                <img src="img/lugar2.jpg"
+                     alt="Interior del consultorio"
+                     loading="lazy">
+
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         SECCIÓN CONTACTO / UBICACIÓN
+    ========================================== -->
+    <section id="contacto" class="seccion-contacto">
+
+        <div class="contacto-contenido reveal-scroll">
+
+            <h2 class="seccion-titulo"
+                data-es="Agenda tu cita"
+                data-pt="Agende seu horário">
+                Agenda tu cita
+            </h2>
+            
+            <div class="separador-con-lineas">
+                <img src="img/separador-flor.png"
+                     alt="Detalle floral"
+                     class="img-separador">
+            </div>
+
+            <p>
+                <strong data-es="Ubicación:"
+                        data-pt="Localização:">
+                    Ubicación:
+                </strong>
+
+                <span data-es="Av. 27 de Mayo, a una cuadra del Centro de Salud."
+                      data-pt="Av. 27 de Mayo, a uma quadra do Centro de Saúde.">
+                    Av. 27 de Mayo, a una cuadra del Centro de Salud.
+                </span>
+            </p>
+
+            <p>Cobija, Pando, Bolivia.</p>
+
+
+            <!-- BOTÓN DE RESERVA WEB -->
+            <div class="redes-enlaces">
+
+                <a href="reserva.html"
+                   class="btn-red-social instagram"
+                   data-es="Agendar una cita"
+                   data-pt="Agendar um horário">
+
+                    <i class="far fa-calendar-check"></i>
+
+                    <span>Agendar una cita</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- WhatsApp como alternativa -->
+            <div class="redes-enlaces">
+
+                <a href="https://wa.me/556899499836?text=Hola,%20me%20gustaría%20hacer%20una%20consulta."
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn-red-social instagram">
+
+                    <i class="fab fa-whatsapp"></i>
+
+                    <span data-es="Consultar por WhatsApp"
+                          data-pt="Consultar pelo WhatsApp">
+                        Consultar por WhatsApp
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+    <footer class="footer">
+
+        <div class="footer-contenido">
+
+            <img src="img/logo2.jpg"
+                 alt="Miel Terrazas Logo"
+                 class="footer-logo-archivo"
+                 loading="lazy">
+
+            <p class="footer-texto">
+                Miel Terrazas | Estética Corporal
+            </p>
+
+            <p data-es="&copy; 2026 Todos los derechos reservados."
+               data-pt="&copy; 2026 Todos os direitos reservados.">
+               &copy; 2026 Todos los derechos reservados.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         BOTÓN FLOTANTE WHATSAPP
+    ========================================== -->
+    <a href="https://wa.me/556899499836?text=Hola,%20me%20gustaría%20agendar%20una%20cita%20o%20hacer%20una%20consulta."
+       class="btn-whatsapp-flotante"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Contactar por WhatsApp">
+
+        <i class="fab fa-whatsapp"></i>
+
+    </a>
+
+
+    <!-- MODAL DE TRATAMIENTO -->
+    <div class="modal" id="modal-tratamiento" aria-hidden="true">
+        <div class="modal-fondo"></div>
+        <div class="modal-contenido">
+            <button class="btn-cerrar-modal" id="modal-cerrar">&times;</button>
+            <h3 id="modal-titulo">Título del Tratamiento</h3>
+            <p id="modal-descripcion">Descripción detallada del tratamiento...</p>
+            
+            <div class="modal-botones">
+                <a href="#" id="modal-whatsapp" class="btn-modal-accion whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Agendar por WhatsApp
+                </a>
+                <a href="#" id="modal-reserva" class="btn-modal-accion web">
+                    <i class="far fa-calendar-alt"></i> Reservar Ahora
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================
+         ARCHIVO JS (COMO MÓDULO PARA FIREBASE)
+    ========================================== -->
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>
