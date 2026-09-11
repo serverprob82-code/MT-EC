@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Cita - Miel Terrazas</title>
+    <style>
+        :root {
+            --fondo-crema: #FFF8F5;
+            --rosa-suave: #FFD1DC;
+            --rosa-fuerte: #E08E9B;
+            --marron-texto: #5C4033;
+            --blanco: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--fondo-crema);
+            color: var(--marron-texto);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .contenedor-reserva {
+            background-color: var(--blanco);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border-top: 5px solid var(--rosa-fuerte);
+        }
+
+        .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--rosa-fuerte);
+            margin-bottom: 20px;
+        }
+
+        .grupo-input {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--rosa-suave);
+            border-radius: 8px;
+            box-sizing: border-box;
+            color: var(--marron-texto);
+            background-color: var(--fondo-crema);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--rosa-fuerte);
+        }
+
+        .btn-reservar {
+            background-color: var(--rosa-fuerte);
+            color: var(--blanco);
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-reservar:hover {
+            background-color: #C77582;
+        }
+
+        .volver {
+            display: block;
+            margin-top: 15px;
+            color: var(--rosa-fuerte);
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-reserva">
+        <img src="img/logo.jpg" alt="Miel Terrazas Logo" class="logo">
+        
+        <h2>Agenda tu Cita</h2>
+        
+        <form id="formulario-reserva">
+            <div class="grupo-input">
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" id="nombre" placeholder="Ej. Ana Silva" required>
+            </div>
+
+            <div class="grupo-input">
+                <label for="celular">Número de Celular / WhatsApp:</label>
+                <input type="tel" id="celular" placeholder="Ej. 71234567" required>
+            </div>
+            
+            <div class="grupo-input">
+                <label for="tratamiento">Tratamiento:</label>
+                <select id="tratamiento" required>
+                    <option value="">Selecciona un tratamiento...</option>
+                    <!-- JavaScript llenará esto de la base central -->
+                </select>
+            </div>
+            
+            <div class="grupo-input">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
+            </div>
+            
+            <div class="grupo-input">
+                <label for="hora">Hora:</label>
+                <select id="hora" required>
+                    <option value="">Selecciona una hora...</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="17:00">05:00 PM</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-reservar" onclick="guardarReserva()">Confirmar Reserva</button>
+            <a href="index.html" class="volver">← Volver al inicio</a>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectTratamiento = document.getElementById('tratamiento');
+            
+            // Tratamientos iniciales leídos de la memoria central
+            let tratamientos = JSON.parse(localStorage.getItem('miel_tratamientos')) || [];
+
+            // Llenar las opciones desplegables solo con los "activos"
+            tratamientos.filter(t => t.activo).forEach(t => {
+                let option = document.createElement('option');
+                option.value = t.es.titulo; // Guardamos el nombre en español
+                option.textContent = t.es.titulo;
+                selectTratamiento.appendChild(option);
+            });
+
+            // Leer si el cliente viene de index.html con un tratamiento seleccionado
+            const parametrosURL = new URLSearchParams(window.location.search);
+            const tratamientoDesdeInicio = parametrosURL.get('tratamiento');
+            
+            if (tratamientoDesdeInicio) {
+                // Verificar si existe en la lista; si no, lo añade temporalmente para no dar error
+                let existe = Array.from(selectTratamiento.options).some(opt => opt.value === tratamientoDesdeInicio);
+                if (!existe) {
+                    let option = document.createElement('option');
+                    option.value = tratamientoDesdeInicio;
+                    option.textContent = tratamientoDesdeInicio;
+                    selectTratamiento.appendChild(option);
+                }
+                // Selecciona automáticamente el tratamiento que el cliente eligió
+                selectTratamiento.value = tratamientoDesdeInicio;
+            }
+        });
+
+        function guardarReserva() {
+            const nombre = document.getElementById('nombre').value;
+            const celular = document.getElementById('celular').value;
+            const tratamiento = document.getElementById('tratamiento').value;
+            const fecha = document.getElementById('fecha').value;
+            const hora = document.getElementById('hora').value;
+
+            if(!nombre || !celular || !tratamiento || !fecha || !hora) {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
+
+            let reservas = JSON.parse(localStorage.getItem('miel_citas_v4')) || [];
+
+            // Filtrar cuántas citas ya hay en ese mismo día y hora
+            let citasEnEseHorario = reservas.filter(r => r.fecha === fecha && r.hora === hora);
+            
+            // Si ya hay 3 personas (o más) guardadas, rechazamos a la número 4
+            if (citasEnEseHorario.length >= 2) {
+                alert("Lo sentimos, el cupo para este horario ya está lleno. Por favor, elige otra hora u otra fecha.");
+                return; 
+            }
+
+            const nuevaReserva = {
+                id: Date.now(),
+                nombre: nombre,
+                celular: celular,
+                tratamiento: tratamiento,
+                fecha: fecha,
+                hora: hora,
+                estado: 'Pendiente' 
+            };
+
+            reservas.push(nuevaReserva);
+            localStorage.setItem('miel_citas_v4', JSON.stringify(reservas));
+
+            alert("¡Tu reserva ha sido enviada con éxito! Te contactaremos pronto para confirmar.");
+            window.location.href = "index.html"; 
+        }
+    </script>
+</body>
+</html>

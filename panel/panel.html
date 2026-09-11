@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Miel Terrazas</title>
+    <link rel="stylesheet" href="panel.css?v=5">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- PANTALLA DE LOGIN (FIREBASE GUARD) -->
+<div id="login-overlay" class="login-overlay">
+    <div class="login-box panel-box">
+        <h2>Acceso Restringido</h2>
+        <form id="login-form" class="login-form">
+            <input type="email" id="login-email" placeholder="Correo electrónico" required class="input-edit">
+            <input type="password" id="login-password" placeholder="Contraseña" required class="input-edit">
+            <button type="submit" class="btn-primary">Ingresar al Panel</button>
+            <p id="login-error">Credenciales incorrectas.</p>
+        </form>
+    </div>
+</div>
+
+<div class="admin-container">
+    <aside class="sidebar">
+        <div class="sidebar-header"><h2>Miel Terrazas</h2><p>Estética Corporal</p></div>
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-target="resumen"><i class="fas fa-chart-line"></i> Resumen</button>
+            <button class="nav-btn" data-target="citas"><i class="fas fa-calendar-alt"></i> Citas</button>
+            <button class="nav-btn" data-target="tratamientos"><i class="fas fa-spa"></i> Tratamientos</button>
+            <button class="nav-btn" data-target="horarios"><i class="fas fa-clock"></i> Horarios</button>
+            <button class="nav-btn" data-target="ajustes"><i class="fas fa-cog"></i> Ajustes</button>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../index.html" class="btn-outline" style="width: 100%;"><i class="fas fa-external-link-alt"></i> Ver web</a>
+            <button id="btn-logout" class="btn-outline btn-danger" style="margin-top: 10px; width: 100%;"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section id="resumen" class="view-section active">
+            <header class="section-header"><div><h1>Hola, Miel 👋</h1><p>Resumen de la actividad de tu espacio de belleza.</p></div></header>
+            <div class="dashboard-cards">
+                <div class="card"><h3>Nuevas Citas</h3><p class="big-number" id="count-pendientes">0</p><span class="status-badge pending">Pendientes</span></div>
+                <div class="card"><h3>Citas Hoy</h3><p class="big-number" id="count-hoy">0</p><span class="status-badge confirmed">Aceptadas</span></div>
+                <div class="card"><h3>Tratamientos</h3><p class="big-number" id="count-tratamientos">0</p><span class="status-badge active">Activos</span></div>
+            </div>
+        </section>
+
+        <section id="citas" class="view-section">
+            <header class="section-header"><div><h1>Gestión de Citas</h1><p>Administra las reservas de tus clientes.</p></div></header>
+            <div class="panel-box tabla-contenedor"><div class="table-responsive"><table class="admin-table citas-table">
+                <thead><tr><th>Cliente</th><th>Contacto</th><th>Tratamiento</th><th>Fecha / Hora</th><th>Estado</th><th>Vista</th><th>Acciones</th></tr></thead>
+                <tbody id="tabla-citas-body"></tbody>
+            </table></div></div>
+        </section>
+
+        <section id="tratamientos" class="view-section">
+            <header class="section-header"><div><h1>Tus Tratamientos</h1><p>Configura precios, duración, contenido y visibilidad en la web.</p></div><button class="btn-primary" id="btn-nuevo-tratamiento"><i class="fas fa-plus"></i> Nuevo</button></header>
+            <div class="panel-box tabla-contenedor"><div class="table-responsive"><table class="admin-table treatments-table">
+                <thead><tr><th>Tratamiento</th><th>Categoría</th><th>Precio (Bs)</th><th>Duración</th><th>Precio web</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <tbody id="tabla-tratamientos-body"></tbody>
+            </table></div></div>
+        </section>
+
+        <section id="horarios" class="view-section">
+            <header class="section-header"><div><h1>Horarios de Atención</h1><p>Define los días y horas en los que tus clientes pueden reservar.</p></div></header>
+            <div class="panel-box">
+                <div id="lista-horarios" class="lista-horarios"></div>
+                <button class="btn-primary" id="btn-guardar-horarios"><i class="fas fa-save"></i> Guardar horarios</button>
+            </div>
+        </section>
+
+        <section id="ajustes" class="view-section">
+            <header class="section-header"><div><h1>Ajustes del Sistema</h1><p>Configuraciones generales y respaldo de los datos.</p></div></header>
+            <div class="panel-box ajustes-box">
+                <div class="ajuste-item"><div><h3>Tasa de cambio</h3><p>Equivalencia utilizada para mostrar precios en reales.</p></div><div class="ajuste-control"><label>1 R$ = <input type="number" min="0.01" step="0.01" id="tasa-cambio-admin"> Bs</label><button class="btn-primary" id="btn-guardar-tasa">Guardar</button></div></div>
+                <div class="flex-gap"><button class="btn-outline" onclick="exportarDatos()"><i class="fas fa-download"></i> Exportar datos</button><button class="btn-outline btn-danger" onclick="reiniciarDatos()"><i class="fas fa-trash"></i> Reiniciar base de datos</button></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div class="modal-admin" id="modal-tratamiento-admin" aria-hidden="true">
+    <div class="modal-admin-card">
+        <button class="modal-admin-cerrar" id="modal-admin-cerrar" type="button" aria-label="Cerrar">&times;</button>
+        <h2 id="modal-admin-titulo">Nuevo tratamiento</h2>
+        <form id="form-tratamiento">
+            <input type="hidden" id="tratamiento-id">
+            <div class="form-grid">
+                <div><label for="campo-es">Nombre (Español)</label><input id="campo-es" required></div>
+                <div><label for="campo-pt">Nombre (Português)</label><input id="campo-pt"></div>
+                <div><label for="desc-es">Descripción (Español)</label><textarea id="desc-es" rows="4" required></textarea></div>
+                <div><label for="desc-pt">Descripción (Português)</label><textarea id="desc-pt" rows="4"></textarea></div>
+                <div><label for="campo-eslogan-es">Eslogan corto (Español)</label><input id="campo-eslogan-es" placeholder="Ej. Para una piel más linda y luminosa."><small>Este texto aparece en la tarjeta. La descripción completa solo aparece al abrirla.</small></div>
+                <div><label for="campo-eslogan-pt">Eslogan corto (Português)</label><input id="campo-eslogan-pt" placeholder="Ex. Para uma pele mais bonita e luminosa."></div>
+                <div><label for="campo-precio">Precio (Bs)</label><input type="number" min="0" step="0.01" id="campo-precio" required></div>
+                <div><label for="campo-duracion">Duración (minutos)</label><input type="number" min="1" step="1" id="campo-duracion" required></div>
+                <div><label for="campo-categoria">Categoría</label><select id="campo-categoria">
+                    <option value="Belleza">Belleza</option>
+                    <option value="Estética corporal">Estética corporal</option>
+                    <option value="Pestañas y cejas">Pestañas y cejas</option>
+                    <option value="Facial">Facial</option>
+                    <option value="Cabello">Cabello</option>
+                    <option value="Manos y pies">Manos y pies</option>
+                    <option value="Depilación">Depilación</option>
+                    <option value="Masajes y bienestar">Masajes y bienestar</option>
+                    <option value="Otros">Otros</option>
+                </select></div>
+                <div><label for="campo-imagen">Imagen (URL, temporal)</label><input id="campo-imagen" placeholder="https://..."><small>La subida de imágenes a Firebase Storage se añadirá en la migración.</small></div>
+                <div class="precio-web-control"><label class="check-control"><input type="checkbox" id="mostrar-precio"> <span>Mostrar precio en la web</span></label><small>Si está desactivado, el precio se guarda en el panel pero no se muestra al público.</small></div>
+            </div>
+            <div class="modal-admin-actions"><button type="button" class="btn-outline" id="modal-admin-cancelar">Cancelar</button><button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar</button></div>
+        </form>
+    </div>
+</div>
+<!-- IMPORTANTE: El script ahora es type="module" para soportar Firebase v9 -->
+<script type="module" src="panel.js?v=5"></script>
+</body>
+</html>
